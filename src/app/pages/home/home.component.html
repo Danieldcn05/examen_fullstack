@@ -1,0 +1,49 @@
+<h1 class="w-full text-center font-bold py-10 text-2xl">Recetario Diario</h1>
+
+<div class="flex justify-center">
+    <select class="w-1/6 border-2 border-amber-600 rounded-md" [(ngModel)]="selectedCategory" (change)="getRecipesWithEvent($event)">
+        <option value="" disabled selected>Seleccione una opción</option>
+        <option *ngFor="let item of categories" [value]="item.strCategory">{{item.strCategory}} </option>
+    </select>
+</div>
+
+<div class="flex justify-center py-10 ">
+    <div class="w-1/3 overflow-hidden relative">
+        <div class="flex transition-transform duration-300" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+            <div *ngFor="let slide of slides" class="w-full flex-shrink-0 border-2 border-amber-600 rounded-md p-3">
+                <h2 class="text-center text-2xl font-bold">{{slide.strMeal}}</h2>
+                <img [src]="slide.strMealThumb" alt="Slide Image" class="w-full h-auto">
+            </div>
+        </div>
+        <button (click)="prevSlide()" class="absolute left-0 top-1/2 transform -translate-y-1/2 rounded-md text-amber-900 cursor-pointer px-4 py-2 bg-amber-50 text-xs">
+            <span>&#9664;</span> 
+        </button>
+        <button (click)="nextSlide()" class="absolute right-0 top-1/2 transform -translate-y-1/2 rounded-md text-amber-900 cursor-pointer px-4 py-2 bg-amber-50 text-xs">
+            <span>&#9654;</span> 
+        </button>
+    </div>
+</div>
+
+
+<div class="flex justify-center space-x-80 my-10">
+    <button (click)="getRandomRecipe()" class= "bg-amber-700 border-amber-700 text-amber-50 cursor-pointer border-2 p-1 rounded-md bg">Random</button>
+    <button (click)="openModal()" class="bg-amber-700 border-amber-700 text-amber-50 cursor-pointer border-2 p-1 rounded-md bg">Enviar</button>
+</div>
+
+
+<div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black ">
+    <div class="bg-white p-6 rounded-md w-1/3">
+        <h2 class="text-xl font-bold mb-4">Enviar Receta</h2>
+        <form (ngSubmit)="sendRecipe()">
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                <input type="email" id="email" [(ngModel)]="email" name="email" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="flex justify-end">
+                <button type="button" (click)="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">Cancelar</button>
+                <button type="submit" class="bg-amber-700 text-white px-4 py-2 rounded-md">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
